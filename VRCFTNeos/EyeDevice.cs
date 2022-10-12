@@ -61,14 +61,14 @@ namespace VRCFT.Neos
                 _eyes.RightEye);
 
             UpdateEye(
-                float3.Zero, 
-                float3.Zero, 
-                true, 
-                0.003f, 
-                1f, 
-                0f, 
-                0f, 
-                0f, 
+                Project2DTo3D(OSCListener.ExpressionsWithAddress["/EyesX"], OSCListener.ExpressionsWithAddress["/EyesY"]),
+                float3.Zero,
+                true,
+                OSCListener.ExpressionsWithAddress["/EyesPupilDiameter"],
+                OSCListener.ExpressionsWithAddress["/CombinedEyeLid"],
+                OSCListener.ExpressionsWithAddress["/EyesWiden"],
+                OSCListener.ExpressionsWithAddress["/EyesSqueeze"],
+                0f,
                 deltaTime, 
                 _eyes.CombinedEye);
             
