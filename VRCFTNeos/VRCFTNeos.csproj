@@ -57,11 +57,11 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EyeDevice.cs" />
+    <Compile Include="Devices\EyeDevice.cs" />
     <Compile Include="TwoKeyDictionary.cs" />
     <Compile Include="VRCFTNeos.cs" />
-    <Compile Include="MouthDevice.cs" />
-    <Compile Include="OSCListener.cs" />
+    <Compile Include="Devices\MouthDevice.cs" />
+    <Compile Include="OSC\OSCListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VRCFTExpressions.cs" />
   </ItemGroup>

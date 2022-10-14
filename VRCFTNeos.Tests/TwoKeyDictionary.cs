@@ -193,7 +193,7 @@
         }
 
         /// <summary>
-        /// Get the length of this two-key dictionary. This m_dic1.Count is used, as it is the same as m_dic2.Count.
+        /// Get the length of this two-key dictionary. m_dic1.Count is used, as it is the same as m_dic2.Count.
         /// </summary>
         public int Count
         {

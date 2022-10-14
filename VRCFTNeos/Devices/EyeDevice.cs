@@ -32,42 +32,43 @@ namespace VRCFT.Neos
             _eyes = new Eyes(inputInterface, "VRCFT Eye Tracking");
         }
 
+        // No dictionary entries in this method should be null
         public void UpdateInputs(float deltaTime)
         {
             _eyes.IsEyeTrackingActive = _eyes.IsEyeTrackingActive;
 
             UpdateEye(
-                Project2DTo3D(OSCListener.VRCFTExpression["/EyeLeftX"], OSCListener.VRCFTExpression["/EyeLeftY"]),
+                Project2DTo3D(OSCListener.VRCFTExpression.GetByKey1("EyeLeftX").Value, OSCListener.VRCFTExpression.GetByKey1("EyeLeftY").Value),
                 float3.Zero, 
                 true,
-                OSCListener.VRCFTExpression["/EyesPupilDiameter"],
-                OSCListener.VRCFTExpression["/LeftEyeLid"],
-                OSCListener.VRCFTExpression["/LeftEyeWiden"],
-                OSCListener.VRCFTExpression["/LeftEyeSqueeze"],
+                OSCListener.VRCFTExpression.GetByKey1("EyesPupilDiameter").Value,
+                OSCListener.VRCFTExpression.GetByKey1("LeftEyeLid").Value,
+                OSCListener.VRCFTExpression.GetByKey1("LeftEyeWiden").Value,
+                OSCListener.VRCFTExpression.GetByKey1("LeftEyeSqueeze").Value,
                 0f, 
                 deltaTime, 
                 _eyes.LeftEye);
             
             UpdateEye(
-                Project2DTo3D(OSCListener.VRCFTExpression["/EyeRightX"], OSCListener.VRCFTExpression["/EyeRightY"]),
+                Project2DTo3D(OSCListener.VRCFTExpression.GetByKey1("EyeRightX").Value, OSCListener.VRCFTExpression.GetByKey1("EyeRightY").Value),
                 float3.Zero, 
                 true,
-                OSCListener.VRCFTExpression["/EyesPupilDiameter"],
-                OSCListener.VRCFTExpression["/RightEyeLid"],
-                OSCListener.VRCFTExpression["/RightEyeWiden"],
-                OSCListener.VRCFTExpression["/RightEyeSqueeze"],
+                OSCListener.VRCFTExpression.GetByKey1("EyesPupilDiameter").Value,
+                OSCListener.VRCFTExpression.GetByKey1("RightEyeLid").Value,
+                OSCListener.VRCFTExpression.GetByKey1("RightEyeWiden").Value,
+                OSCListener.VRCFTExpression.GetByKey1("RightEyeSqueeze").Value,
                 0f, 
                 deltaTime, 
                 _eyes.RightEye);
 
             UpdateEye(
-                Project2DTo3D(OSCListener.VRCFTExpression["/EyesX"], OSCListener.VRCFTExpression["/EyesY"]),
+                Project2DTo3D(OSCListener.VRCFTExpression.GetByKey1("EyesX").Value, OSCListener.VRCFTExpression.GetByKey1("EyesY").Value),
                 float3.Zero,
                 true,
-                OSCListener.VRCFTExpression["/EyesPupilDiameter"],
-                OSCListener.VRCFTExpression["/CombinedEyeLid"],
-                OSCListener.VRCFTExpression["/EyesWiden"],
-                OSCListener.VRCFTExpression["/EyesSqueeze"],
+                OSCListener.VRCFTExpression.GetByKey1("EyesPupilDiameter").Value,
+                OSCListener.VRCFTExpression.GetByKey1("CombinedEyeLid").Value,
+                OSCListener.VRCFTExpression.GetByKey1("EyesWiden").Value,
+                OSCListener.VRCFTExpression.GetByKey1("EyesSqueeze").Value,
                 0f,
                 deltaTime, 
                 _eyes.CombinedEye);

@@ -1,9 +1,9 @@
 ﻿using BaseX;
+using FrooxEngine;
 using Rug.Osc;
 using System;
 using System.Net;
 using System.Threading;
-using System.Collections.Generic;
 using VRCFT.Expressions;
 
 namespace VRCFT.Neos
@@ -32,19 +32,29 @@ namespace VRCFT.Neos
             else
                 _receiver = new OscReceiver(canidate, DEFAULT_PORT);
 
-            foreach (var shape in VRCFTExpressions.EyeShapesWithAddress)
+            foreach (var shape in VRCFTExpressions.NormalizedEyeExpressions)
             {
-                VRCFTExpression.Add(shape, VRCFTExpressions.OSCPrefix + shape, 0f);
+                VRCFTExpression.Add(shape, VRCFTExpressions.VRCFT_OSC_PREFIX + shape, 0f);
             }
                 
-            foreach (var shape in VRCFTExpressions.MouthShapesWithAddress)
+            foreach (var shape in VRCFTExpressions.NormalizedMouthExpressions)
             {
-                VRCFTExpression.Add(shape, VRCFTExpressions.OSCPrefix + shape, 0f);
+                VRCFTExpression.Add(shape, VRCFTExpressions.VRCFT_OSC_PREFIX + shape, 0f);
             }
                 
             _thread = new Thread(new ThreadStart(ListenLoop));
             _receiver.Connect();
             _thread.Start();
+        }
+
+        public void SetupDevices()
+        {
+            // Where (value != 0) implies true
+            if (Convert.ToBoolean(VRCFTExpression.GetByKey1("EyeTrackingActive")))
+                Engine.Current.InputInterface.RegisterInputDriver(new EyeDevice());
+
+            if (Convert.ToBoolean(VRCFTExpression.GetByKey1("MouthTrackingActive")))
+                Engine.Current.OnReady += () => Engine.Current.InputInterface.RegisterInputDriver(new MouthDevice());
         }
 
         private static void ListenLoop()
@@ -66,7 +76,7 @@ namespace VRCFT.Neos
                             {
                                 if (float.TryParse(message[0].ToString(), out candidate))
                                 {
-                                    VRCFTExpression.[message.Address] = candidate;
+                                    VRCFTExpression.SetByKey2(message.Address, candidate);
                                 }
                             }
                         }

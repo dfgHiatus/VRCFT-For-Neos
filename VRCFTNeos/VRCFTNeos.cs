@@ -31,14 +31,9 @@ namespace VRCFT.Neos
 			new Harmony("net.dfgHiatus.VRCFTNeos").PatchAll();
 			Config = GetConfiguration();
             osc = new OSCListener(Config.GetValue(OptionalPort));
+            osc.SetupDevices(); // Give the OSC Client time to connect? Engine.Current.OnReady += () => ...
 
-            if (OSCListener.VRCFTExpression["/EyeTrackingActive"] != 0)
-                Engine.Current.InputInterface.RegisterInputDriver(new EyeDevice());
-
-            if (OSCListener.VRCFTExpression["/MouthTrackingActive"] != 0)
-				Engine.Current.OnReady += () => Engine.Current.InputInterface.RegisterInputDriver(new MouthDevice());
-            
-			Engine.Current.OnShutdown += () => osc.Teardown();
+            Engine.Current.OnShutdown += () => osc.Teardown();
 
 		}
 	}
