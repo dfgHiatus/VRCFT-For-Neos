@@ -2,6 +2,8 @@
 {
     public static class VRCFTExpressions
     {
+        public static string OSCPrefix = "/avatar/parameters";
+
         public static string[] EyeShapesWithAddress = new string[]
         {
             "/EyesY",

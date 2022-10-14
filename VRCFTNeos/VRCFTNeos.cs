@@ -32,10 +32,10 @@ namespace VRCFT.Neos
 			Config = GetConfiguration();
             osc = new OSCListener(Config.GetValue(OptionalPort));
 
-            if (OSCListener.ExpressionsWithAddress["/EyeTrackingActive"] != 0)
+            if (OSCListener.VRCFTExpression["/EyeTrackingActive"] != 0)
                 Engine.Current.InputInterface.RegisterInputDriver(new EyeDevice());
 
-            if (OSCListener.ExpressionsWithAddress["/MouthTrackingActive"] != 0)
+            if (OSCListener.VRCFTExpression["/MouthTrackingActive"] != 0)
 				Engine.Current.OnReady += () => Engine.Current.InputInterface.RegisterInputDriver(new MouthDevice());
             
 			Engine.Current.OnShutdown += () => osc.Teardown();

@@ -37,36 +37,36 @@ namespace VRCFT.Neos
             _mouth.IsTracking = true;
 
             _mouth.Jaw = new float3(
-                OSCListener.ExpressionsWithAddress["/JawRight"] - OSCListener.ExpressionsWithAddress["/JawLeft"],
-                OSCListener.ExpressionsWithAddress["/JawOpen"],
-                OSCListener.ExpressionsWithAddress["/JawForward"]
+                OSCListener.VRCFTExpression["/JawRight"] - OSCListener.VRCFTExpression["/JawLeft"],
+                OSCListener.VRCFTExpression["/JawOpen"],
+                OSCListener.VRCFTExpression["/JawForward"]
             );
             _mouth.Tongue = new float3(
-                OSCListener.ExpressionsWithAddress["/TongueRight"] - OSCListener.ExpressionsWithAddress["/TongueLeft"],
-                OSCListener.ExpressionsWithAddress["/TongueUp"] - OSCListener.ExpressionsWithAddress["/TongueDown"],
-                OSCListener.ExpressionsWithAddress["/TongueLongStep1"] + OSCListener.ExpressionsWithAddress["/TongueLongStep2"]);
+                OSCListener.VRCFTExpression["/TongueRight"] - OSCListener.VRCFTExpression["/TongueLeft"],
+                OSCListener.VRCFTExpression["/TongueUp"] - OSCListener.VRCFTExpression["/TongueDown"],
+                OSCListener.VRCFTExpression["/TongueLongStep1"] + OSCListener.VRCFTExpression["/TongueLongStep2"]);
 
             _mouth.JawOpen = 0f;
-            _mouth.MouthPout = OSCListener.ExpressionsWithAddress["/MouthPout"];
-            _mouth.TongueRoll = OSCListener.ExpressionsWithAddress["/TongueRoll"];
+            _mouth.MouthPout = OSCListener.VRCFTExpression["/MouthPout"];
+            _mouth.TongueRoll = OSCListener.VRCFTExpression["/TongueRoll"];
 
-            _mouth.LipBottomOverUnder = OSCListener.ExpressionsWithAddress["/MouthLowerInside"];
-            _mouth.LipBottomOverturn = OSCListener.ExpressionsWithAddress["/MouthLowerOverturn"];
-            _mouth.LipTopOverUnder = OSCListener.ExpressionsWithAddress["/MouthUpperInside"];
-            _mouth.LipTopOverturn = OSCListener.ExpressionsWithAddress["/MouthUpperOverturn"];
+            _mouth.LipBottomOverUnder = OSCListener.VRCFTExpression["/MouthLowerInside"];
+            _mouth.LipBottomOverturn = OSCListener.VRCFTExpression["/MouthLowerOverturn"];
+            _mouth.LipTopOverUnder = OSCListener.VRCFTExpression["/MouthUpperInside"];
+            _mouth.LipTopOverturn = OSCListener.VRCFTExpression["/MouthUpperOverturn"];
 
             _mouth.LipLowerHorizontal = 0f;
             _mouth.LipUpperHorizontal = 0f;
 
-            _mouth.LipLowerLeftRaise = OSCListener.ExpressionsWithAddress["/MouthLowerLeft"];
-            _mouth.LipLowerRightRaise = OSCListener.ExpressionsWithAddress["/MouthLowerRight"];
-            _mouth.LipUpperRightRaise = OSCListener.ExpressionsWithAddress["/MouthUpperRight"];
-            _mouth.LipUpperLeftRaise = OSCListener.ExpressionsWithAddress["/MouthUpperUpLeft"];
+            _mouth.LipLowerLeftRaise = OSCListener.VRCFTExpression["/MouthLowerLeft"];
+            _mouth.LipLowerRightRaise = OSCListener.VRCFTExpression["/MouthLowerRight"];
+            _mouth.LipUpperRightRaise = OSCListener.VRCFTExpression["/MouthUpperRight"];
+            _mouth.LipUpperLeftRaise = OSCListener.VRCFTExpression["/MouthUpperUpLeft"];
 
-            _mouth.MouthRightSmileFrown = OSCListener.ExpressionsWithAddress["/MouthSmileRight"] - OSCListener.ExpressionsWithAddress["/MouthSadRight"];
-            _mouth.MouthLeftSmileFrown = OSCListener.ExpressionsWithAddress["/MouthSmileLeft"] - OSCListener.ExpressionsWithAddress["/MouthSadLeft"];            _mouth.CheekLeftPuffSuck = 0f;
-            _mouth.CheekRightPuffSuck = OSCListener.ExpressionsWithAddress["/CheekPuffRight"] - OSCListener.ExpressionsWithAddress["/CheekSuck"];
-            _mouth.CheekLeftPuffSuck = OSCListener.ExpressionsWithAddress["/CheekPuffLeft"] - OSCListener.ExpressionsWithAddress["/CheekSuck"];
+            _mouth.MouthRightSmileFrown = OSCListener.VRCFTExpression["/MouthSmileRight"] - OSCListener.VRCFTExpression["/MouthSadRight"];
+            _mouth.MouthLeftSmileFrown = OSCListener.VRCFTExpression["/MouthSmileLeft"] - OSCListener.VRCFTExpression["/MouthSadLeft"];            _mouth.CheekLeftPuffSuck = 0f;
+            _mouth.CheekRightPuffSuck = OSCListener.VRCFTExpression["/CheekPuffRight"] - OSCListener.VRCFTExpression["/CheekSuck"];
+            _mouth.CheekLeftPuffSuck = OSCListener.VRCFTExpression["/CheekPuffLeft"] - OSCListener.VRCFTExpression["/CheekSuck"];
         }
     }
 }

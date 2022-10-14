@@ -37,37 +37,37 @@ namespace VRCFT.Neos
             _eyes.IsEyeTrackingActive = _eyes.IsEyeTrackingActive;
 
             UpdateEye(
-                Project2DTo3D(OSCListener.ExpressionsWithAddress["/EyeLeftX"], OSCListener.ExpressionsWithAddress["/EyeLeftY"]),
+                Project2DTo3D(OSCListener.VRCFTExpression["/EyeLeftX"], OSCListener.VRCFTExpression["/EyeLeftY"]),
                 float3.Zero, 
                 true,
-                OSCListener.ExpressionsWithAddress["/EyesPupilDiameter"],
-                OSCListener.ExpressionsWithAddress["/LeftEyeLid"],
-                OSCListener.ExpressionsWithAddress["/LeftEyeWiden"],
-                OSCListener.ExpressionsWithAddress["/LeftEyeSqueeze"],
+                OSCListener.VRCFTExpression["/EyesPupilDiameter"],
+                OSCListener.VRCFTExpression["/LeftEyeLid"],
+                OSCListener.VRCFTExpression["/LeftEyeWiden"],
+                OSCListener.VRCFTExpression["/LeftEyeSqueeze"],
                 0f, 
                 deltaTime, 
                 _eyes.LeftEye);
             
             UpdateEye(
-                Project2DTo3D(OSCListener.ExpressionsWithAddress["/EyeRightX"], OSCListener.ExpressionsWithAddress["/EyeRightY"]),
+                Project2DTo3D(OSCListener.VRCFTExpression["/EyeRightX"], OSCListener.VRCFTExpression["/EyeRightY"]),
                 float3.Zero, 
                 true,
-                OSCListener.ExpressionsWithAddress["/EyesPupilDiameter"],
-                OSCListener.ExpressionsWithAddress["/RightEyeLid"],
-                OSCListener.ExpressionsWithAddress["/RightEyeWiden"],
-                OSCListener.ExpressionsWithAddress["/RightEyeSqueeze"],
+                OSCListener.VRCFTExpression["/EyesPupilDiameter"],
+                OSCListener.VRCFTExpression["/RightEyeLid"],
+                OSCListener.VRCFTExpression["/RightEyeWiden"],
+                OSCListener.VRCFTExpression["/RightEyeSqueeze"],
                 0f, 
                 deltaTime, 
                 _eyes.RightEye);
 
             UpdateEye(
-                Project2DTo3D(OSCListener.ExpressionsWithAddress["/EyesX"], OSCListener.ExpressionsWithAddress["/EyesY"]),
+                Project2DTo3D(OSCListener.VRCFTExpression["/EyesX"], OSCListener.VRCFTExpression["/EyesY"]),
                 float3.Zero,
                 true,
-                OSCListener.ExpressionsWithAddress["/EyesPupilDiameter"],
-                OSCListener.ExpressionsWithAddress["/CombinedEyeLid"],
-                OSCListener.ExpressionsWithAddress["/EyesWiden"],
-                OSCListener.ExpressionsWithAddress["/EyesSqueeze"],
+                OSCListener.VRCFTExpression["/EyesPupilDiameter"],
+                OSCListener.VRCFTExpression["/CombinedEyeLid"],
+                OSCListener.VRCFTExpression["/EyesWiden"],
+                OSCListener.VRCFTExpression["/EyesSqueeze"],
                 0f,
                 deltaTime, 
                 _eyes.CombinedEye);

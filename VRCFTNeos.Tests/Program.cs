@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using VRCFT.Neos;
 
 namespace VRCFTNeos.Tests
 {
@@ -6,33 +7,52 @@ namespace VRCFTNeos.Tests
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
-        }
-        
+            TwoKeyDictionary<string, string, float> twoKeyDictionary = new TwoKeyDictionary<string, string, float>();
 
-        public static float AlphaF = 2f;
-        public static float BetaF = 2f;
+            // Test add methods
+            Console.WriteLine(twoKeyDictionary.Add("key1", "key2", 1.0f)); // True
+            Console.WriteLine(twoKeyDictionary.Add("key3", "key4", 1.0f)); // True
+            Console.WriteLine(twoKeyDictionary.Add("key5", "key6", 1.0f)); // True
+            Console.WriteLine(twoKeyDictionary.Add("key5", "key7", 1.0f)); // False, key5 exists as a Key1
+            Console.WriteLine(twoKeyDictionary.Add("key6", "key6", 1.0f)); // False, key6 exists as a Key2
+            Console.WriteLine(twoKeyDictionary.ContainsValue(1.0f)); // True
+            Console.WriteLine();
 
-        public static double AlphaD = 2;
-        public static double BetaD = 2;
+            // Test set methods
+            Console.WriteLine(twoKeyDictionary.Set("key1", "key2", 2.0f)); //True
+            Console.WriteLine(twoKeyDictionary.SetByKey1("key1", 2.0f)); // True
+            Console.WriteLine(twoKeyDictionary.SetByKey2("key2", 3.0f)); // True
+            Console.WriteLine();
 
-        private static Vector3 Project2DTo3D(float x, float y)
-        {
-            var v = new Vector3((float) Math.Tan(AlphaF * x),
-                                (float) Math.Tan(BetaF * y),
-                                1f);
-            Vector3.Normalize(v);
-            return v;
-        }
+            // Test get methods
+            Console.WriteLine(twoKeyDictionary.GetByKey1("key1").HasValue); //True
+            Console.WriteLine(twoKeyDictionary.GetByKey1("key1").Value);    // 3.0f
+            Console.WriteLine(twoKeyDictionary.GetByKey1("key2").HasValue); // False
+            Console.WriteLine(twoKeyDictionary.GetByKey1("key2") is null);  // True
+            Console.WriteLine(twoKeyDictionary.GetByKey1("key3").HasValue); // True
+            Console.WriteLine(twoKeyDictionary.GetByKey1("key3").Value);    // 1.0f
+            Console.WriteLine();
 
-        private static Vector3 Project2DTo3D(double x, double y)
-        {
-            var v = new Vector3(Math.Tan(AlphaD * x),
-                                Math.Tan(BetaD * y),
-                                1);
+            // Test remove methods. Count is 3 prior
+            twoKeyDictionary.RemoveByKey1("key1"); // 2
+            twoKeyDictionary.RemoveByKey1("key2"); // Does not exist, 2
 
-            Vector3.Normalize(v);
-            return v;
+            // Test count methods
+            Console.WriteLine(twoKeyDictionary.Count); 
+            Console.WriteLine();
+
+            // Test contains methods
+            Console.WriteLine(twoKeyDictionary.ContainsKey1("key1")); // False, we just removed it
+            Console.WriteLine(twoKeyDictionary.ContainsKey2("key2")); // False. This was tied to key1!
+            Console.WriteLine(twoKeyDictionary.ContainsKey1("key3")); // True
+            Console.WriteLine(twoKeyDictionary.ContainsKey1("key5")); // True
+            Console.WriteLine(twoKeyDictionary.ContainsKey1("key4")); // False, this never existed in the first place!
+            Console.WriteLine();
+
+            // Test clear methods
+            twoKeyDictionary.Clear();
+            Console.WriteLine(twoKeyDictionary.Count);
+            Console.WriteLine();
         }
     }
 }

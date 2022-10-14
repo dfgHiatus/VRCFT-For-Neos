@@ -10,7 +10,8 @@ namespace VRCFT.Neos
 {
     public class OSCListener
     {
-        public static Dictionary<string, float> ExpressionsWithAddress = new Dictionary<string, float>();
+        public static TwoKeyDictionary<string, string, float> VRCFTExpression = new TwoKeyDictionary<string, string, float>();
+        
         private static OscReceiver _receiver;
         private static Thread _thread;
         private const int DEFAULT_PORT = 9000;
@@ -19,7 +20,7 @@ namespace VRCFT.Neos
         {
             if (_receiver != null)
             {
-                UniLog.Error("BabbleOSC connection already exists.");
+                UniLog.Error("OSC connection already exists!");
                 return;
             }
 
@@ -32,11 +33,15 @@ namespace VRCFT.Neos
                 _receiver = new OscReceiver(canidate, DEFAULT_PORT);
 
             foreach (var shape in VRCFTExpressions.EyeShapesWithAddress)
-                ExpressionsWithAddress.Add(shape, 0f);
-
+            {
+                VRCFTExpression.Add(shape, VRCFTExpressions.OSCPrefix + shape, 0f);
+            }
+                
             foreach (var shape in VRCFTExpressions.MouthShapesWithAddress)
-                ExpressionsWithAddress.Add(shape, 0f);
-
+            {
+                VRCFTExpression.Add(shape, VRCFTExpressions.OSCPrefix + shape, 0f);
+            }
+                
             _thread = new Thread(new ThreadStart(ListenLoop));
             _receiver.Connect();
             _thread.Start();
@@ -57,11 +62,11 @@ namespace VRCFT.Neos
                         packet = _receiver.Receive();
                         if (OscMessage.TryParse(packet.ToString(), out message))
                         {
-                            if (ExpressionsWithAddress.ContainsKey(message.Address))
+                            if (VRCFTExpression.ContainsKey2(message.Address))
                             {
                                 if (float.TryParse(message[0].ToString(), out candidate))
                                 {
-                                    ExpressionsWithAddress[message.Address] = candidate;
+                                    VRCFTExpression.[message.Address] = candidate;
                                 }
                             }
                         }
