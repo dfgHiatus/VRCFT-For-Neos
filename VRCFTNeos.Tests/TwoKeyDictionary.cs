@@ -1,4 +1,7 @@
-﻿namespace VRCFT.Neos
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace VRCFT.Neos
 {
     //  https://stackoverflow.com/questions/32761880/net-dictionary-with-two-keys-and-one-value
 
@@ -11,7 +14,7 @@
     /// <typeparam name="TKey1"></typeparam>
     /// <typeparam name="TKey2"></typeparam>
     /// <typeparam name="TValue"></typeparam>
-    public class TwoKeyDictionary<TKey1, TKey2, TValue> where TValue : struct
+    public class TwoKeyDictionary<TKey1, TKey2, TValue>
     {
         private object m_data_lock = new object();
         private Dictionary<TKey1, TKey2> m_dic1 = new Dictionary<TKey1, TKey2>();
@@ -33,7 +36,7 @@
                 {
                     return false;
                 }
-                
+
                 m_dic1[key1] = key2;
                 m_dic2[key2] = value;
 
@@ -42,14 +45,14 @@
         }
 
         /// <summary>
-        /// Sets the specified key and value to the dictionary, if it already exists.
+        /// Sets the specified key and value in the dictionary, if it already exists.
         /// This is functionally identical to the Add() method, but it will not add the value if it doesn't already exist.
         /// </summary>
         /// <param name="key1"></param>
         /// <param name="key2"></param>
         /// <param name="value"></param>
         /// <returns>Returns true if the value was set, false if the value was not found.</returns>
-        public bool Set(TKey1 key1, TKey2 key2, TValue value)
+        public bool SetByAnyKey(TKey1 key1, TKey2 key2, TValue value)
         {
             lock (m_data_lock)
             {
@@ -57,10 +60,10 @@
                 {
                     return false;
                 }
-                
+
                 m_dic1[key1] = key2;
                 m_dic2[key2] = value;
-                return true; 
+                return true;
             }
         }
 
@@ -104,54 +107,78 @@
             }
         }
 
-        // In the event we try and get a TValue that does not exist, return null.
-        // I opted for this instead of default(T) as in my use case TValues will be predominantly floats.
-        // Returning 0.0f if the value is not found wouldn't make sense, at least for me.
-
         /// <summary>
-        /// Gets the value associated with the outer key. If no value is found, null is returned.
+        /// Gets the value associated with the outer key.
         /// </summary>
         /// <param name="key1"></param>
-        /// <returns>The TValue for this Tkey1. If no value is found, null is returned. </returns>
-        public TValue? GetByKey1(TKey1 key1)
+        /// <returns>The TValue for this Tkey1. </returns>
+        public TValue GetByKey1(TKey1 key1)
         {
             lock (m_data_lock)
             {
-                if (!m_dic1.TryGetValue(key1, out TKey2 key2))
-                {
-                    return null;
-                }
-
-                if (m_dic2.TryGetValue(key2, out TValue value))
-                {
-                    return value;
-                }
-                else
-                {
-                    return null;
-                }
+                return m_dic2[m_dic1[key1]];
             }
         }
 
         /// <summary>
-        /// Gets the value associated with the inner key. If no value is found, null is returned.
+        /// Gets the value associated with the inner key.
         /// </summary>
         /// <param name="key2"></param>
-        /// <returns>The TValue for this Tkey2. If no value is found, null is returned. </returns>
-        public TValue? GetByKey2(TKey2 key2)
+        /// <returns>The TValue for this Tkey2. </returns>
+        public TValue GetByKey2(TKey2 key2)
         {
             lock (m_data_lock)
             {
-                if (m_dic2.TryGetValue(key2, out TValue value))
-                {
-                    return value;
-                }
-                else
-                {
-                    return null;
-                }
+                return m_dic2[key2];
             }
         }
+
+        /// <summary>
+        /// Gets the value associated with the outer key.
+        /// </summary>
+        /// <param name="key1"></param>
+        /// <returns>The TValue for this Tkey1. </returns>
+        public bool TryGetByKey1(TKey1 key1, out TValue value)
+        {
+            lock (m_data_lock)
+            {
+                if (!ContainsKey1(key1))
+                {
+                    value = default(TValue);
+                    return false;
+                }
+
+                if (!ContainsKey2(m_dic1[key1]))
+                {
+                    value = default(TValue);
+                    return false;
+                }
+
+                value = m_dic2[m_dic1[key1]];
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Gets the value associated with the inner key.
+        /// </summary>
+        /// <param name="key2"></param>
+        /// <returns>The TValue for this Tkey2. </returns>
+        public bool TryGetByKey2(TKey2 key2, out TValue value)
+        {
+            lock (m_data_lock)
+            {
+                if (!ContainsKey2(key2))
+                {
+                    value = default(TValue);
+                    return false;
+                }
+
+                value = m_dic2[key2];
+                return true;
+            }
+        }
+
 
         /// <summary>
         /// Removes the value associated with the outer key. If the outer key is not found, nothing happens. If the outer key is found, the inner key must also exist and is also removed.
@@ -184,7 +211,7 @@
                 {
                     return false;
                 }
-                
+
                 TKey1 tmp_key1 = m_dic1.First((kvp) => kvp.Value.Equals(key2)).Key;
                 m_dic1.Remove(tmp_key1);
                 m_dic2.Remove(key2);
