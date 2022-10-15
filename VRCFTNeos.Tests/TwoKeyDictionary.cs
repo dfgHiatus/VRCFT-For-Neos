@@ -52,7 +52,7 @@ namespace VRCFT.Neos
         /// <param name="key2"></param>
         /// <param name="value"></param>
         /// <returns>Returns true if the value was set, false if the value was not found.</returns>
-        public bool SetByAnyKey(TKey1 key1, TKey2 key2, TValue value)
+        public bool SetByPair(TKey1 key1, TKey2 key2, TValue value)
         {
             lock (m_data_lock)
             {

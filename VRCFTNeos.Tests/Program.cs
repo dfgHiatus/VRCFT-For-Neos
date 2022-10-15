@@ -19,23 +19,21 @@ namespace VRCFTNeos.Tests
             Console.WriteLine();
 
             // Test set methods
-            Console.WriteLine(twoKeyDictionary.Set("key1", "key2", 2.0f)); //True
+            Console.WriteLine(twoKeyDictionary.SetByPair("key1", "key2", 2.0f)); //True
             Console.WriteLine(twoKeyDictionary.SetByKey1("key1", 2.0f)); // True
             Console.WriteLine(twoKeyDictionary.SetByKey2("key2", 3.0f)); // True
             Console.WriteLine();
 
             // Test get methods
-            Console.WriteLine(twoKeyDictionary.GetByKey1("key1").HasValue); //True
-            Console.WriteLine(twoKeyDictionary.GetByKey1("key1").Value);    // 3.0f
-            Console.WriteLine(twoKeyDictionary.GetByKey1("key2").HasValue); // False
-            Console.WriteLine(twoKeyDictionary.GetByKey1("key2") is null);  // True
-            Console.WriteLine(twoKeyDictionary.GetByKey1("key3").HasValue); // True
-            Console.WriteLine(twoKeyDictionary.GetByKey1("key3").Value);    // 1.0f
+            Console.WriteLine(twoKeyDictionary.GetByKey1("key1")); // 3.0f
+            float value;
+            Console.WriteLine(twoKeyDictionary.TryGetByKey1("key2", out value)); // False, 0f
+            Console.WriteLine(twoKeyDictionary.GetByKey1("key3")); // 1.0f
             Console.WriteLine();
 
             // Test remove methods. Count is 3 prior
             twoKeyDictionary.RemoveByKey1("key1"); // 2
-            twoKeyDictionary.RemoveByKey1("key2"); // Does not exist, 2
+            twoKeyDictionary.RemoveByKey1("key2"); // Does not exist, so 2
 
             // Test count methods
             Console.WriteLine(twoKeyDictionary.Count); 
@@ -51,7 +49,7 @@ namespace VRCFTNeos.Tests
 
             // Test clear methods
             twoKeyDictionary.Clear();
-            Console.WriteLine(twoKeyDictionary.Count);
+            Console.WriteLine(twoKeyDictionary.Count); //0
             Console.WriteLine();
         }
     }
