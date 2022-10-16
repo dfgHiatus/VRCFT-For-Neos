@@ -6,7 +6,7 @@ namespace VRCFT.Neos
     //  https://stackoverflow.com/questions/32761880/net-dictionary-with-two-keys-and-one-value
 
     /// <summary>
-    /// A dictionary whose values can be accessed by two keys. Enforces unique outer keys and inner keys
+    /// A thread-safe dictionary whose values can be accessed by two keys. Enforces unique outer keys and inner keys
     /// </summary>
     /// <remarks>
     ///  This isn't the fastest implementation, but it's best suited to adapt to varying OSC protocol naming schemes

@@ -16,7 +16,6 @@ namespace VRCFT.Neos
     /// <typeparam name="TValue"></typeparam>
     public class TwoKeyDictionary<TKey1, TKey2, TValue>
     {
-        private readonly object m_data_lock = new object();
         private Dictionary<TKey1, TKey2> m_dic1 = new Dictionary<TKey1, TKey2>();
         private Dictionary<TKey2, TValue> m_dic2 = new Dictionary<TKey2, TValue>();
 
@@ -30,18 +29,15 @@ namespace VRCFT.Neos
         /// <returns>Returns true if the value was added, false if the value was already present in the dictionary.</returns>
         public bool Add(TKey1 key1, TKey2 key2, TValue value)
         {
-            lock (m_data_lock)
+            if (key1 == null || key2 == null || ContainsKey1(key1) || ContainsKey2(key2))
             {
-                if (key1 == null || key2 == null || ContainsKey1(key1) || ContainsKey2(key2))
-                {
-                    return false;
-                }
-
-                m_dic1[key1] = key2;
-                m_dic2[key2] = value;
-
-                return true;
+                return false;
             }
+
+            m_dic1[key1] = key2;
+            m_dic2[key2] = value;
+
+            return true;
         }
 
         /// <summary>
@@ -52,19 +48,16 @@ namespace VRCFT.Neos
         /// <param name="key2"></param>
         /// <param name="value"></param>
         /// <returns>Returns true if the value was set, false if the value was not found.</returns>
-        public bool SetByPair(TKey1 key1, TKey2 key2, TValue value)
+        public bool SetByAnyKey(TKey1 key1, TKey2 key2, TValue value)
         {
-            lock (m_data_lock)
+            if (!(ContainsKey1(key1) || ContainsKey2(key2)))
             {
-                if (!(ContainsKey1(key1) || ContainsKey2(key2)))
-                {
-                    return false;
-                }
-
-                m_dic1[key1] = key2;
-                m_dic2[key2] = value;
-                return true;
+                return false;
             }
+
+            m_dic1[key1] = key2;
+            m_dic2[key2] = value;
+            return true;
         }
 
         /// <summary>
@@ -75,16 +68,13 @@ namespace VRCFT.Neos
         /// <returns>Returns true if the value was set, false if the value was not found.</returns>
         public bool SetByKey1(TKey1 key1, TValue value)
         {
-            lock (m_data_lock)
+            if (!ContainsKey1(key1))
             {
-                if (!ContainsKey1(key1))
-                {
-                    return false;
-                }
-
-                m_dic2[m_dic1[key1]] = value;
-                return true;
+                return false;
             }
+
+            m_dic2[m_dic1[key1]] = value;
+            return true;
         }
 
         /// <summary>
@@ -95,17 +85,15 @@ namespace VRCFT.Neos
         /// <returns>Returns true if the value was set, false if the value was not found.</returns>
         public bool SetByKey2(TKey2 key2, TValue value)
         {
-            lock (m_data_lock)
+            if (!ContainsKey2(key2))
             {
-                if (!ContainsKey2(key2))
-                {
-                    return false;
-                }
-
-                m_dic2[key2] = value;
-                return true;
+                return false;
             }
+
+            m_dic2[key2] = value;
+            return true;
         }
+
 
         /// <summary>
         /// Gets the value associated with the outer key.
@@ -114,10 +102,7 @@ namespace VRCFT.Neos
         /// <returns>The TValue for this Tkey1. </returns>
         public TValue GetByKey1(TKey1 key1)
         {
-            lock (m_data_lock)
-            {
-                return m_dic2[m_dic1[key1]];
-            }
+            return m_dic2[m_dic1[key1]];
         }
 
         /// <summary>
@@ -127,10 +112,7 @@ namespace VRCFT.Neos
         /// <returns>The TValue for this Tkey2. </returns>
         public TValue GetByKey2(TKey2 key2)
         {
-            lock (m_data_lock)
-            {
-                return m_dic2[key2];
-            }
+            return m_dic2[key2];
         }
 
         /// <summary>
@@ -140,23 +122,20 @@ namespace VRCFT.Neos
         /// <returns>The TValue for this Tkey1. </returns>
         public bool TryGetByKey1(TKey1 key1, out TValue value)
         {
-            lock (m_data_lock)
+            if (!ContainsKey1(key1))
             {
-                if (!ContainsKey1(key1))
-                {
-                    value = default(TValue);
-                    return false;
-                }
-
-                if (!ContainsKey2(m_dic1[key1]))
-                {
-                    value = default(TValue);
-                    return false;
-                }
-
-                value = m_dic2[m_dic1[key1]];
-                return true;
+                value = default(TValue);
+                return false;
             }
+
+            if (!ContainsKey2(m_dic1[key1]))
+            {
+                value = default(TValue);
+                return false;
+            }
+
+            value = m_dic2[m_dic1[key1]];
+            return true;
         }
 
         /// <summary>
@@ -166,19 +145,15 @@ namespace VRCFT.Neos
         /// <returns>The TValue for this Tkey2. </returns>
         public bool TryGetByKey2(TKey2 key2, out TValue value)
         {
-            lock (m_data_lock)
+            if (!ContainsKey2(key2))
             {
-                if (!ContainsKey2(key2))
-                {
-                    value = default(TValue);
-                    return false;
-                }
-
-                value = m_dic2[key2];
-                return true;
+                value = default(TValue);
+                return false;
             }
-        }
 
+            value = m_dic2[key2];
+            return true;
+        }
 
         /// <summary>
         /// Removes the value associated with the outer key. If the outer key is not found, nothing happens. If the outer key is found, the inner key must also exist and is also removed.
@@ -186,17 +161,14 @@ namespace VRCFT.Neos
         /// <param name="key1"></param>
         public bool RemoveByKey1(TKey1 key1)
         {
-            lock (m_data_lock)
+            if (!m_dic1.TryGetValue(key1, out TKey2 tmp_key2))
             {
-                if (!m_dic1.TryGetValue(key1, out TKey2 tmp_key2))
-                {
-                    return false;
-                }
-
-                m_dic1.Remove(key1);
-                m_dic2.Remove(tmp_key2);
-                return true;
+                return false;
             }
+
+            m_dic1.Remove(key1);
+            m_dic2.Remove(tmp_key2);
+            return true;
         }
 
         /// <summary>
@@ -205,18 +177,15 @@ namespace VRCFT.Neos
         /// <param name="key2"></param>
         public bool RemoveByKey2(TKey2 key2)
         {
-            lock (m_data_lock)
+            if (!m_dic2.ContainsKey(key2))
             {
-                if (!m_dic2.ContainsKey(key2))
-                {
-                    return false;
-                }
-
-                TKey1 tmp_key1 = m_dic1.First((kvp) => kvp.Value.Equals(key2)).Key;
-                m_dic1.Remove(tmp_key1);
-                m_dic2.Remove(key2);
-                return true;
+                return false;
             }
+
+            TKey1 tmp_key1 = m_dic1.First((kvp) => kvp.Value.Equals(key2)).Key;
+            m_dic1.Remove(tmp_key1);
+            m_dic2.Remove(key2);
+            return true;
         }
 
         /// <summary>
@@ -226,10 +195,7 @@ namespace VRCFT.Neos
         {
             get
             {
-                lock (m_data_lock)
-                {
-                    return m_dic1.Count;
-                }
+                return m_dic1.Count;
             }
         }
 
@@ -240,10 +206,7 @@ namespace VRCFT.Neos
         /// <returns>True if the outer dictionary contains the key.</returns>
         public bool ContainsKey1(TKey1 key1)
         {
-            lock (m_data_lock)
-            {
-                return m_dic1.ContainsKey(key1);
-            }
+            return m_dic1.ContainsKey(key1);
         }
 
         /// <summary>
@@ -253,10 +216,7 @@ namespace VRCFT.Neos
         /// <returns>True if the inner dictionary contains the key.</returns>
         public bool ContainsKey2(TKey2 key2)
         {
-            lock (m_data_lock)
-            {
-                return m_dic2.ContainsKey(key2);
-            }
+            return m_dic2.ContainsKey(key2);
         }
 
         /// <summary>
@@ -266,10 +226,7 @@ namespace VRCFT.Neos
         /// <returns>True if the two-key dictionary contains the value.</returns>
         public bool ContainsValue(TValue value)
         {
-            lock (m_data_lock)
-            {
-                return m_dic2.ContainsValue(value);
-            }
+            return m_dic2.ContainsValue(value);
         }
 
         /// <summary>
@@ -277,11 +234,8 @@ namespace VRCFT.Neos
         /// </summary>
         public void Clear()
         {
-            lock (m_data_lock)
-            {
-                m_dic1.Clear();
-                m_dic2.Clear();
-            }
+            m_dic1.Clear();
+            m_dic2.Clear();
         }
     }
 }

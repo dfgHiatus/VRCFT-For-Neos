@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Devices\EyeDevice.cs" />
     <Compile Include="ThreadedTwoKeyDictionary.cs" />
+    <Compile Include="TwoKeyDictionary.cs" />
     <Compile Include="VRCFTNeos.cs" />
     <Compile Include="Devices\MouthDevice.cs" />
     <Compile Include="OSC\OSCListener.cs" />
