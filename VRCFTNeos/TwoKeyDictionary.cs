@@ -16,7 +16,7 @@ namespace VRCFT.Neos
     /// <typeparam name="TValue"></typeparam>
     public class TwoKeyDictionary<TKey1, TKey2, TValue>
     {
-        private object m_data_lock = new object();
+        private readonly object m_data_lock = new object();
         private Dictionary<TKey1, TKey2> m_dic1 = new Dictionary<TKey1, TKey2>();
         private Dictionary<TKey2, TValue> m_dic2 = new Dictionary<TKey2, TValue>();
 
@@ -52,7 +52,7 @@ namespace VRCFT.Neos
         /// <param name="key2"></param>
         /// <param name="value"></param>
         /// <returns>Returns true if the value was set, false if the value was not found.</returns>
-        public bool SetByAnyKey(TKey1 key1, TKey2 key2, TValue value)
+        public bool SetByPair(TKey1 key1, TKey2 key2, TValue value)
         {
             lock (m_data_lock)
             {
@@ -107,7 +107,6 @@ namespace VRCFT.Neos
             }
         }
 
-
         /// <summary>
         /// Gets the value associated with the outer key.
         /// </summary>
@@ -120,7 +119,7 @@ namespace VRCFT.Neos
                 return m_dic2[m_dic1[key1]];
             }
         }
-        
+
         /// <summary>
         /// Gets the value associated with the inner key.
         /// </summary>
@@ -133,7 +132,7 @@ namespace VRCFT.Neos
                 return m_dic2[key2];
             }
         }
-                
+
         /// <summary>
         /// Gets the value associated with the outer key.
         /// </summary>
@@ -159,7 +158,7 @@ namespace VRCFT.Neos
                 return true;
             }
         }
-        
+
         /// <summary>
         /// Gets the value associated with the inner key.
         /// </summary>
@@ -179,6 +178,7 @@ namespace VRCFT.Neos
                 return true;
             }
         }
+
 
         /// <summary>
         /// Removes the value associated with the outer key. If the outer key is not found, nothing happens. If the outer key is found, the inner key must also exist and is also removed.

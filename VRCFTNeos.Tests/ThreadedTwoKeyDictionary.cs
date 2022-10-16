@@ -14,9 +14,9 @@ namespace VRCFT.Neos
     /// <typeparam name="TKey1"></typeparam>
     /// <typeparam name="TKey2"></typeparam>
     /// <typeparam name="TValue"></typeparam>
-    public class TwoKeyDictionary<TKey1, TKey2, TValue>
+    public class ThreadedTwoKeyDictionary<TKey1, TKey2, TValue>
     {
-        private readonly object m_data_lock = new object();
+        private object m_data_lock = new object();
         private Dictionary<TKey1, TKey2> m_dic1 = new Dictionary<TKey1, TKey2>();
         private Dictionary<TKey2, TValue> m_dic2 = new Dictionary<TKey2, TValue>();
 

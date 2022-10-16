@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using VRCFT.Expressions;
 using VRCFT.Neos;
 
 namespace VRCFTNeos.Tests
@@ -15,6 +16,7 @@ namespace VRCFTNeos.Tests
             Console.WriteLine(twoKeyDictionary.Add("key5", "key6", 1.0f)); // True
             Console.WriteLine(twoKeyDictionary.Add("key5", "key7", 1.0f)); // False, key5 exists as a Key1
             Console.WriteLine(twoKeyDictionary.Add("key6", "key6", 1.0f)); // False, key6 exists as a Key2
+            
             Console.WriteLine(twoKeyDictionary.ContainsValue(1.0f)); // True
             Console.WriteLine();
 
@@ -50,6 +52,19 @@ namespace VRCFTNeos.Tests
             // Test clear methods
             twoKeyDictionary.Clear();
             Console.WriteLine(twoKeyDictionary.Count); //0
+            Console.WriteLine();
+
+            foreach (var shape in VRCFTExpressions.NormalizedEyeExpressions)
+            {
+                twoKeyDictionary.Add(shape, VRCFTExpressions.VRCFT_OSC_PREFIX + shape, 0f);
+            }
+
+            foreach (var shape in VRCFTExpressions.NormalizedMouthExpressions)
+            {
+                twoKeyDictionary.Add(shape, VRCFTExpressions.VRCFT_OSC_PREFIX + shape, 0f);
+            }
+
+            Console.WriteLine(twoKeyDictionary.Count);
             Console.WriteLine();
         }
     }

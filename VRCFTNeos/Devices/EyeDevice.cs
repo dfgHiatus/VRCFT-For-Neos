@@ -35,10 +35,10 @@ namespace VRCFT.Neos
         // No dictionary entries in this method should be null
         public void UpdateInputs(float deltaTime)
         {
-            _eyes.IsEyeTrackingActive = _eyes.IsEyeTrackingActive;
+            _eyes.IsEyeTrackingActive = true;
 
             UpdateEye(
-                Project2DTo3D(OSCListener.VRCFTExpression.GetByKey1("EyeLeftX"), OSCListener.VRCFTExpression.GetByKey1("EyeLeftY")),
+                Project2DTo3D(OSCListener.VRCFTExpression.GetByKey1("LeftEyeX"), OSCListener.VRCFTExpression.GetByKey1("LeftEyeY")),
                 float3.Zero, 
                 true,
                 OSCListener.VRCFTExpression.GetByKey1("EyesPupilDiameter"),
@@ -50,7 +50,7 @@ namespace VRCFT.Neos
                 _eyes.LeftEye);
             
             UpdateEye(
-                Project2DTo3D(OSCListener.VRCFTExpression.GetByKey1("EyeRightX"), OSCListener.VRCFTExpression.GetByKey1("EyeRightY")),
+                Project2DTo3D(OSCListener.VRCFTExpression.GetByKey1("RightEyeX"), OSCListener.VRCFTExpression.GetByKey1("RightEyeY")),
                 float3.Zero, 
                 true,
                 OSCListener.VRCFTExpression.GetByKey1("EyesPupilDiameter"),

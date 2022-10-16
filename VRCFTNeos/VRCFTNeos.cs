@@ -31,10 +31,8 @@ namespace VRCFT.Neos
 			new Harmony("net.dfgHiatus.VRCFTNeos").PatchAll();
 			Config = GetConfiguration();
             osc = new OSCListener(Config.GetValue(OptionalPort));
-            osc.SetupDevices(); // Give the OSC Client time to connect? Engine.Current.OnReady += () => ...
-
+            Engine.Current.OnReady += () =>  osc.SetupDevices(); // Give the OSC Client time to connect
             Engine.Current.OnShutdown += () => osc.Teardown();
-
 		}
 	}
 }

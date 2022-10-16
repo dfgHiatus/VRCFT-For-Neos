@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Devices\EyeDevice.cs" />
-    <Compile Include="TwoKeyDictionary.cs" />
+    <Compile Include="ThreadedTwoKeyDictionary.cs" />
     <Compile Include="VRCFTNeos.cs" />
     <Compile Include="Devices\MouthDevice.cs" />
     <Compile Include="OSC\OSCListener.cs" />
@@ -71,6 +71,6 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)\$(TargetFileName)" "G:\Steam\steamapps\common\NeosVR\nml_mods"</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetDir)\$(TargetFileName)" "C:\Program Files (x86)\Steam\steamapps\common\NeosVR\nml_mods\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

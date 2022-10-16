@@ -2,6 +2,7 @@
 using FrooxEngine;
 using Rug.Osc;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using VRCFT.Expressions;
@@ -10,7 +11,7 @@ namespace VRCFT.Neos
 {
     public class OSCListener
     {
-        public static TwoKeyDictionary<string, string, float> VRCFTExpression = new TwoKeyDictionary<string, string, float>();
+        public static ThreadedTwoKeyDictionary<string, string, float> VRCFTExpression = new ThreadedTwoKeyDictionary<string, string, float>();
         
         private static OscReceiver _receiver;
         private static Thread _thread;
@@ -32,12 +33,7 @@ namespace VRCFT.Neos
             else
                 _receiver = new OscReceiver(canidate, DEFAULT_PORT);
 
-            foreach (var shape in VRCFTExpressions.NormalizedEyeExpressions)
-            {
-                VRCFTExpression.Add(shape, VRCFTExpressions.VRCFT_OSC_PREFIX + shape, 0f);
-            }
-                
-            foreach (var shape in VRCFTExpressions.NormalizedMouthExpressions)
+            foreach (var shape in VRCFTExpressions.NormalizedEyeExpressions.Union(VRCFTExpressions.NormalizedMouthExpressions))
             {
                 VRCFTExpression.Add(shape, VRCFTExpressions.VRCFT_OSC_PREFIX + shape, 0f);
             }
@@ -47,14 +43,12 @@ namespace VRCFT.Neos
             _thread.Start();
         }
 
+        // Called on Engine.Ready
         public void SetupDevices()
         {
-            // Where (value != 0) implies true
-            if (Convert.ToBoolean(VRCFTExpression.GetByKey1("EyeTrackingActive")))
-                Engine.Current.InputInterface.RegisterInputDriver(new EyeDevice());
-
-            if (Convert.ToBoolean(VRCFTExpression.GetByKey1("MouthTrackingActive")))
-                Engine.Current.OnReady += () => Engine.Current.InputInterface.RegisterInputDriver(new MouthDevice());
+            // TODO Add config/parse current module
+            Engine.Current.InputInterface.RegisterInputDriver(new EyeDevice());
+            Engine.Current.InputInterface.RegisterInputDriver(new MouthDevice());
         }
 
         private static void ListenLoop()
